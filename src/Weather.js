@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import FormattedDate from "./FormattedDate.js";
 import "./Weather.css";
 
 export default function Weather(props) {
@@ -8,11 +9,12 @@ export default function Weather(props) {
     console.log(response.data);
     setWeatherData({
       ready: true,
-      temperature: response.data.main.temp,
-      humidity: response.data.main.humidity,
-      date: "Monday 08:00",
-      description: response.data.weather[0].description,
-      wind: response.data.main.wind.speed,
+      temperature: response.data.temperature.current,
+      humidity: response.data.humidity,
+      date: new Date(response.data.time * 1000),
+      description: response.data.condition.description,
+      iconUrl: response.data.condition.icon_url,
+      wind: response.data.wind.speed,
       city: response.data.name,
     });
   }
@@ -41,24 +43,18 @@ export default function Weather(props) {
         </form>
         <h1>{weatherData.city}</h1>
         <ul>
-          <li>{weatherData.date}</li>
+          <li>
+            <FormattedDate date={weatherData.date} />
+          </li>
           <li className="text-capitalize">{weatherData.description}</li>
         </ul>
         <div className="row mt-3">
           <div className="col-6">
-            <div className="clearfix">
-              <img
-                src="{weatherData.iconUrl}"
-                alt="{weatherData.description}"
-                className="float-left"
-              />
-              <div className="float-left">
-                <span className="temperature">
-                  {Math.round(weatherData.temperature)}
-                </span>
-                <span className="unit">ºC</span>
-              </div>
-            </div>
+            <img src={weatherData.iconUrl} alt="{weatherData.description}" />
+            <span className="temperature">
+              {Math.round(weatherData.temperature)}
+            </span>
+            <span className="unit">ºC</span>
           </div>
           <div className="col-6">
             <ul>
