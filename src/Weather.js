@@ -10,13 +10,13 @@ export default function Weather(props) {
     console.log(response.data);
     setWeatherData({
       ready: true,
-      temperature: response.data.temperature,
-      humidity: response.data.humidity,
+      temperature: response.data.temperature.current,
+      humidity: response.data.temperature.humidity,
       date: new Date(response.data.time * 1000),
       description: response.data.condition.description,
       iconUrl: response.data.condition.icon_url,
       wind: response.data.wind.speed,
-      city: response.data.name,
+      city: response.data.city,
     });
   }
 
@@ -33,7 +33,6 @@ export default function Weather(props) {
 
   function handleCityChange(event) {
     setCity(event.target.value);
-    alert(city);
   }
 
   if (weatherData.ready) {
